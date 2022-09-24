@@ -1,0 +1,103 @@
+from tkinter import *
+from tkinter.messagebox import showinfo
+from tkinter.filedialog import askopenfilename,asksaveasfilename
+import os
+def newfile():
+    global file
+    root.title("Untitled - Notepad")
+    file=None
+    TextArea.delete(1.0,END) #1.0 stand for from first line till lastline remove everything
+
+def openfile():
+    global file
+    file=askopenfilename(defaultextension=".txt",filetypes=[("All Files","*.*"),("Text Documents","*.txt")])
+            #*.* stands for all file , *.txt means that ends with txt
+    if file=="":
+        file=None
+    else:
+        root.title(os.path.basename(file)+"- Notepad")
+        TextArea.delete(1.0,END)
+        f=open(file,"r")
+        TextArea.insert(1.0,f.read())
+        f.close()
+def savefile():
+    global file
+    if file==None:
+        file=asksaveasfilename(initialfile='Untitled.txt',defaultextension=".txt",
+                               filetypes=[("All Files","*.*"),("Text Documents","*.txt")])
+        if file=="":
+            file=None
+        else:  #save as new file
+            f=open(file,"w")
+            f.write(TextArea.get(1.0,END))
+            f.close()
+            root.title(os.path.basename(file)+ "-Notepad")
+    else:  #save the file
+        f = open(file, "w")
+        f.write(TextArea.get(1.0, END))
+        f.close()
+def quitapp():
+    root.destroy()
+
+def cut():
+    TextArea.event_generate(("<<Cut>>")) #automatically cut event handle
+
+def copy():
+    TextArea.event_generate(("<<Copy>>"))  # automatically copy event handle
+
+def paste():
+    TextArea.event_generate(("<<Paste>>"))  # automatically paste event handle
+
+def about():
+    showinfo("NOTEPAD","Notepad created by Riya Gupta")
+
+root=Tk()
+root.title("NOTEPAD")
+root.geometry("644x600")
+root.minsize(250,250)
+#ADD TEXTAREA
+TextArea=Text(root,font="lucida 13")
+file=None
+TextArea.pack(expand=True,fill=BOTH)
+
+#MENUBAR
+MenuBar=Menu(root)
+#filemenu starts
+FileMenu=Menu(MenuBar,tearoff=0)
+
+#to open new file
+FileMenu.add_command(label="New",command=newfile)
+
+# to open already existing file
+FileMenu.add_command(label="Open",command=openfile)
+
+#to save current file
+FileMenu.add_command(label="Save",command=savefile)
+FileMenu.add_separator()
+FileMenu.add_command(label="Exit",command=quitapp)
+MenuBar.add_cascade(label="File",menu=FileMenu)
+#filemenu ends
+
+#editmenu starts
+EditMenu=Menu(MenuBar,tearoff=0)
+#to give a feature of cut
+EditMenu.add_command(label="Cut",command=cut)
+EditMenu.add_command(label="Copy",command=copy)
+EditMenu.add_command(label="Paste",command=paste)
+MenuBar.add_cascade(label="Edit",menu=EditMenu)
+#editmenu ends
+
+#helpmenu starts
+HelpMenu=Menu(MenuBar,tearoff=0)
+HelpMenu.add_command(label="About Notepad",command=about)
+MenuBar.add_cascade(label="Help",menu=HelpMenu)
+#helpmenu ends
+
+root.config(menu=MenuBar)
+
+#adding scrollbar
+ScrollBar=Scrollbar(TextArea)
+ScrollBar.pack(side=RIGHT,fill=Y)
+ScrollBar.config(command=TextArea.yview)
+TextArea.config(yscrollcommand=ScrollBar.set)
+root.mainloop()
