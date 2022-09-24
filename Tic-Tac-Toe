@@ -1,0 +1,101 @@
+def print_board(a):
+    print("",a[1],"|",a[2],"|",a[3]," ")
+    print("---|---|---")
+    print("",a[4],"|",a[5],"|",a[6]," ")
+    print("---|---|---")
+    print("",a[7],"|",a[8],"|",a[9]," ")
+
+def instructions():
+    print("\n-----WELCOME TO TIC TAC TOE-----\n")
+    print_board(pos)
+    print()
+    player[0]=input("Enter name of first player-- ")
+    player[1]=input("Enter name of second player-- ")
+    print("\n---------INSTRUCTIONS TO FOLLOW---------\n")
+    print("-->Player 1 will use x")
+    print("-->Player 2 will use 0")
+    print("--> Turn starts from",player[0])
+    print("------>  Positions be like   ")
+    print(" 1 | 2 | 3 ")
+    print("---|---|----")
+    print(" 4 | 5 | 6 ")
+    print("---|---|----")
+    print(" 7 | 8 | 9 ")
+    print("Enter s to start the game: ")
+    flag=input()
+    return flag
+
+def start_game():
+    l = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    l1 = []
+    turn =0
+    for i in range(9):
+        if turn%2==0:
+            print("This is your turn ",player[0])
+            p=int(input("Enter a position"))
+            if p in l:
+                if p not in l1:
+                    l1.append(p)
+                    v='x'
+                    pos[p]=v
+                    print_board(pos)
+                    winner=check_win(v)
+                    if winner=='nobody':
+                        turn=1
+                        continue
+                    else:
+                        print("Yeah",player[0],"has won the game")
+                        break
+                else:
+                    print("This position has already taken.Try next time!!!")
+                    exit()
+            else:
+                print("You have entered invalid position")
+                exit()
+        else:
+            print("This is your turn ", player[1])
+            p = int(input("Enter a position"))
+            if p in l:
+                if p not in l1:
+                    l1.append(p)
+                    v = '0'
+                    pos[p] = v
+                    print_board(pos)
+                    winner = check_win(v)
+                    if winner == 'nobody':
+                        turn = 0
+                        continue
+                    else:
+                        print("Yeah", player[1], "has won the game")
+                        break
+                else:
+                    print("This position has already taken.Try next time!!!")
+                    exit()
+            else:
+                print("You have entered invalid position")
+                exit()
+    else:
+        print("\n---- GAME TIE ----\n")
+def check_win(v):
+    for i in winning_terms:
+        if (pos[i[0]],pos[i[1]],pos[i[2]])==(v,v,v):
+            winner=player[0]
+            return winner
+        elif (pos[i[0]], pos[i[1]], pos[i[2]]) == (v, v, v):
+            winner=player[1]
+            return winner
+    else:
+        return "nobody"
+
+pos=[' ']*10
+player=[' ',' ']
+
+winning_terms=[(1,2,3),(4,5,6),(7,8,9),(1,4,7),(2,5,8),(3,6,9),(1,5,9),(3,5,7)]
+
+
+flag=instructions()
+if flag=='s':
+    start_game()
+else:
+    print("Please enter 's' to start the game")
+
