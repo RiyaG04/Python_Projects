@@ -1,0 +1,15 @@
+import random
+def play():
+    user_input=input("Enter your choice 'r' for rock,'s' for scissor,'p' for paper").lower()
+    computer_choice=random.choice(['r','s','p'])
+    if(user_input==computer_choice):
+        return "Oops game tie!!!"
+    elif is_win(user_input,computer_choice):
+        return "You won!!!"
+    return "Computer has won!!!!"
+def is_win(player,opponent):
+    if (player=='s' and opponent=='p') or (player=='r' and opponent=='s') or (player=='p' and opponent=='r'):
+        return True
+    else:
+        return False
+print(play())
