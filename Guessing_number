@@ -1,0 +1,34 @@
+import random
+
+def guessing(x):
+    random_num=random.randint(1,x)
+    attempt=0
+    while True:
+        attempt+=1
+        guess=int(input(f"Guess a number between 1 and {x} :-  "))
+        if(guess<random_num):
+            print("Oops!!! your guess is too low. Try again")
+        elif(guess>random_num):
+            print("Oops!!! your guess is too high. Try again")
+        else:
+            print(f"You successfully gussed the number in {attempt} attempts")
+            break
+
+def computer_guessing(x):
+    low=1
+    high=x
+    feedback=''
+    while feedback !='c':
+        guess=random.randint(low,high)
+        feedback=input(f"Is the {guess} TOO HIGH(h) , TOO LOW(l), CORRECT(c) ??").lower()
+        if feedback=='h':
+            high=guess-1
+        elif feedback=='l':
+            low=guess+1
+        elif feedback=='c':
+            print(f"Yah!! correct gussed by computer")
+            break
+        else:
+            print('you have choosed a wrong sign!!!')
+            break
+computer_guessing(200)
